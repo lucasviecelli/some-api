@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_11_215656) do
+ActiveRecord::Schema.define(version: 2018_07_12_013607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "cities", force: :cascade do |t|
-    t.string "name"
-    t.string "time_zone"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "events", id: false, force: :cascade do |t|
+    t.integer "event_type", null: false
+    t.integer "value", null: false
+    t.datetime "time", null: false
+    t.index ["event_type", "time"], name: "events_event_type_time_key", unique: true
   end
 
 end

@@ -1,9 +1,17 @@
-FROM aptible/ruby:2.4-ubuntu-16.04
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs libxslt-dev libxml2-dev
-RUN mkdir /app
-WORKDIR /app
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
+FROM ruby:2.4.4-alpine
+WORKDIR /usr/src/app
+COPY . .
+RUN apk add --no-cache --update build-base \
+  linux-headers \
+  git \
+  postgresql-dev \
+  nodejs \
+  tzdata \
+  curl \
+  && curl -L \
+  https://github.com/maxcnunes/waitforit/releases/download/v2.2.0/waitforit-linux_amd64 > \
+  /usr/bin/waitforit \
+  && chmod +x /usr/bin/waitforit 
 RUN bundle install
-COPY . /app
-EXPOSE 3000
+ENTRYPOINT [ "./start.sh" ]
+CMD ["rails", "server", "puma"]

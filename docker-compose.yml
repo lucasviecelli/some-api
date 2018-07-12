@@ -9,15 +9,14 @@ services:
     environment: 
       - POSTGRES_PASSWORD=postgres
 
-  web:
+  service:
     build: .
     volumes:
-      - .:/app
+      - .:/usr/src/app
     ports:
       - "3000:3000"
     links:
       - db
-    entrypoint: rails s
 
 volumes:
   pg-data:
